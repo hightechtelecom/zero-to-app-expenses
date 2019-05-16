@@ -31,16 +31,16 @@ exports.detectMax = function(annotations) {
 }
 
 exports.detectTotal = function(raw) {
-  let text = raw.split("\n");
+  let textLinesArray = raw.split("\n");
   var candidates = [];
-  for (var i = 0; i < text.length; i++) {
+  for (var i = 0; i < textLinesArray.length; i++) {
     for (word of keywords) {
-      if (text[i].toLowerCase().indexOf(word) !== -1) {
+      if (textLinesArray[i].toLowerCase().indexOf(word) !== -1) {
         // check if the group before was an amount, and prefer it over having an
         // amount listed before it
         var amountFound = false;
-        if (i < text.length-1) {
-          var amount = parseAmount(text[i+1]);
+        if (i < textLinesArray.length-1) {
+          var amount = parseAmount(textLinesArray[i+1]);
           if (amount !== null) {
             candidates.push([word, amount]);
             amountFound = true;
@@ -48,7 +48,7 @@ exports.detectTotal = function(raw) {
         }
         // check if the next group was an amount
         if (i > 0 && !amountFound) {
-          var amount = parseAmount(text[i-1]);
+          var amount = parseAmount(textLinesArray[i-1]);
           if (amount !== null) {
             candidates.push([word, amount]);
           }
